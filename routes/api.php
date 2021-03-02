@@ -11,7 +11,9 @@ use App\Http\Controllers\AulasController;
 use App\Http\Controllers\AtividadesController;
 use App\Http\Controllers\FinanceiroController;
 use App\Http\Controllers\LivesController;
+use App\Http\Controllers\PagWiseController;
 
+use Laravel\Jetstream\Rules\Role;
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
@@ -99,9 +101,11 @@ Route::group(['prefix' => 'v1'], function ($router) {
     ], function ($router) {
         // Route::put('c/{id_oferta_disciplina_turma}', [MateriaisController::class, 'getMateriasAndamento'] );
         Route::post('matricula/aluno', [FinanceiroController::class, 'show_join'] );
+        Route::post('pagar', [PagWiseController::class, 'gerar_cobranca'] );
         Route::get('matricula/semestres/{id_matricula}', [FinanceiroController::class, 'getSemestreAluno'] );
         Route::get('pedidos/faturas/{semestre_leltivo_id}', [FinanceiroController::class, 'pegarPedidos'] );
-        
+        Route::get('pedidos/parcelas/{id_finan_pedido_recebimento}', [FinanceiroController::class, 'pegarParcelasPedido'] );
+   
    
         
     });

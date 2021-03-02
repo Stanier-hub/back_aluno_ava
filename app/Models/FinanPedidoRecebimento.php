@@ -12,7 +12,7 @@ class FinanPedidoRecebimento extends Model
 
     protected $table = 'finan_pedido_recebimento';
 
-    protected $fillable = ['id', 'usuario_id', 'emissao', 'data_validade', 'valor_total', 'filial_id', 'finan_forma_pagamento_id', 'finan_caixa_id', 'finan_cambio_id', 'semestre_letivo_id', 'semestre_oferta_disciplina_id', 'avaliacao_id', 'status', 'user_in', 'user_up'];
+    protected $fillable = ['id', 'usuario_id', 'emissao', 'data_vencimento', 'valor_total', 'filial_id', 'finan_forma_pagamento_id', 'finan_caixa_id', 'finan_cambio_id', 'semestre_letivo_id', 'semestre_oferta_disciplina_id', 'avaliacao_id', 'status', 'user_in', 'user_up'];
 
     public function itens()
     {
