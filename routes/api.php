@@ -109,6 +109,20 @@ Route::group(['prefix' => 'v1'], function ($router) {
    
         
     });
+    
+    Route::group([
+        //'middleware' => 'auth:api',
+        // 'middleware' => 'apiJwt', //Criado em Middleware/apiProtected
+        'namespace' => 'pagwise',
+        'prefix' => 'pagwise',
+        
+    ], function ($router) {
+        Route::get('baixar_boletos', [PagWiseController::class, 'baixar_boletos'] );
+            Route::get('baixar_pix', [PagWiseController::class, 'baixar_pix'] );
+
+   
+        
+    });
 
     
 

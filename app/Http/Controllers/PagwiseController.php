@@ -39,10 +39,10 @@ class PagWiseController extends Controller
 
 
     $bo = $this->finan_contas->where('id', $dados_ordem->id_finan_contas_receber)->first();
-if($bo->status == 3){
-    // $message =['tipo'=>'erro'];
-    return response()->json(['warning','Esse boleto ja avisa cido gerado','https://pagwise.com.br/cobrancas/'.$bo->ordem_uuid],200);
-}
+    if($bo->status == 3){
+        // $message =['tipo'=>'erro'];
+        return response()->json(['status'=>'warning','mensagem'=>'Esse boleto ja avisa cido gerado','dados'=>'https://pagwise.com.br/cobrancas/'.$bo->ordem_uuid],200);
+    }
 
     $dados_usu = DB::table('usuario')
     ->join('cidade','cidade.id','usuario.cidade_id')
@@ -80,12 +80,12 @@ if($bo->status == 3){
   
 //   $nosso_numero = $this->nosso_numero();
   #endrefio
-  $cambio = DB::table('finan_cambio')->where('id',1)->first();
+  $cambio = DB::table('finan_cambio')->orderBy('id','desc')->first();
 //    return 'https://pagwise.com.br/cobrancas/11cba9cd-613a-4069-83dd-bd02e319a318';
   date_default_timezone_set('America/Sao_Paulo');
 
+$valor_boleto = $dados_ordem->valor_total *0.7;
 
-  
   $dados = [
       
           "empresa"=>[
@@ -96,7 +96,7 @@ if($bo->status == 3){
                ],
                
                 "numeroDocumento"=> $dados_ordem->id_finan_contas_receber,
-                "valor" =>(float)number_format($dados_ordem->valor_total/(int)$cambio->compra, 2, '.', ''),
+                "valor" => (float)number_format($valor_boleto/(int)$cambio->compra, 2, '.', ''),
                 "dataVencimento" => date('d.m.Y', strtotime('+5 days')),
                 "dataProcessamento" => date('d.m.Y'),
                 "dataDocumentos" => date('d.m.Y'),
@@ -143,9 +143,9 @@ if($bo->status == 3){
                 
                 $data->save();
                
-            return ['success','Boleto gerado com sucesso','https://pagwise.com.br/cobrancas/'.$res_deco->uuid];
+            return ['status'=>'success','mensagem'=>'Boleto gerado com sucesso','dados'=>'https://pagwise.com.br/cobrancas/'.$res_deco->uuid];
             }
-            return ['error','Erro ao gerar'];
+            return ['status'=>'error','mensagem'=>'Erro ao gerar'];
             
             // var_dump($res_deco);
            
@@ -179,6 +179,121 @@ if($bo->status == 3){
             $decode =json_decode($response);
             return $decode->access_token;
  }
+ 
+ 	public function baixar_boletos()
+	{
+	   // date_default_timezone_set('America/Sao_Paulo');
+	    
+	   // $date = new DateTime();
+	    
+    //     echo $date->format('Y-m-d H:i:s T');
+  
+	   // date->format("H:i:s T")
+	      $startDate = '2021-01-01T13:38:50.582Z';
+	   // $startDate = $date->format('Y-01-d H:i:s T');// date('Y-m-d H:i:s',strtotime('-30 days'));
+
+        $curl = curl_init();
+        
+        curl_setopt_array($curl, array(
+          CURLOPT_URL => 'https://pagwise.com.br/api/v1/boleto/bb?status=pago&startDate='.$startDate.'&endDate=2021-12-30T13:38:50.582Z',
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => '',
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 0,
+          CURLOPT_FOLLOWLOCATION => true,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => 'GET',
+          CURLOPT_HTTPHEADER => array(
+            'api-key: 21a87771-a92c-44c3-b44f-546aa5221234',
+            'access-token:'.$this->token_acesso_pagwise(),
+          ),
+        ));
+        
+        $response = curl_exec($curl);
+        $respon = curl_exec($curl);
+        
+        curl_close($curl);
+        
+        $response = json_decode($response);
+       
+        foreach($response as $value){
+            foreach($value as $val){
+              
+		      
+		      $contas_receber =  $this->finan_contas->where('ordem_uuid',$val->ordem_uuid)->first();
+		      if(isset($contas_receber->status)){
+		           $contas_receber->valor_pago = $val->valor_pago;
+		        $contas_receber->status = 2;
+		            $ids[] = $contas_receber->save();
+		      }
+		       
+		        
+		   
+            }
+            
+        }
+        
+        
+        
+     return response()->json($ids,200);
+   
+    //   echo $respon;
+          
+	}
+	
+	public function baixar_pix()
+	{
+	   // date_default_timezone_set('America/Sao_Paulo');
+	    
+	   // $date = new DateTime();
+	    
+    //     echo $date->format('Y-m-d H:i:s T');
+  
+	   // date->format("H:i:s T")
+	      $startDate = '2021-01-01T13:38:50.582Z';
+	   // $startDate = $date->format('Y-01-d H:i:s T');// date('Y-m-d H:i:s',strtotime('-30 days'));
+
+        $curl = curl_init();
+        
+        curl_setopt_array($curl, array(
+          CURLOPT_URL => 'https://pagwise.com.br/api/v1/pix/bb?status=CONCLUIDA&startDate='.$startDate.'&endDate=2021-12-30T13:38:50.582Z',
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => '',
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 0,
+          CURLOPT_FOLLOWLOCATION => true,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => 'GET',
+          CURLOPT_HTTPHEADER => array(
+            'api-key: 21a87771-a92c-44c3-b44f-546aa5221234',
+            'access-token:'.$this->token_acesso_pagwise(),
+          ),
+        ));
+        
+        $response = curl_exec($curl);
+        $respon = curl_exec($curl);
+        
+        curl_close($curl);
+        
+        $response = json_decode($response);
+       
+        foreach($response as $value){
+            foreach($value as $val){
+                
+        //     
+		            $contas_receber =  $this->finan_contas->where('ordem_uuid',$val->ordem_uuid)->first();
+		      if(isset($contas_receber->status)){
+		           $contas_receber->valor_pago = $val->valor_original;
+		        $contas_receber->status = 2;
+		            $ids[] = $contas_receber->save();
+		      }
+            }
+            
+        }
+    //   echo count($res);
+   return response()->json($ids,200);
+          
+	}
 
 
 }

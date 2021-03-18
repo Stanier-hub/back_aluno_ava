@@ -31,11 +31,12 @@ class FinanceiroController extends Controller
         $this->finan_contas = $finan_contas;
     }
 
-public function show_join()
+       public function show_join()
     {
 
-        $matriculagradecurricular = MatriculaGradeCurricular::getByUser($this->user->id);
+        $matriculagradecurricular = MatriculaGradeCurricular::getByUser($this->user->usuario_id);
         return response()->json($matriculagradecurricular,200);
+        
     }
 
     
@@ -62,6 +63,7 @@ public function show_join()
         $data = $this->finan_pedidos
         ->join('produto','produto.id','finan_pedido_recebimento.produto_id')
         ->where('semestre_letivo_id',$id_semestre_letivo)
+        ->where('finan_pedido_recebimento.status',1)
         ->select('finan_pedido_recebimento.id','produto.nome as nome_produto','valor_total','finan_pedido_recebimento.data_vencimento')
         ->get();
         foreach($data as $item){
