@@ -12,6 +12,8 @@ use App\Http\Controllers\AtividadesController;
 use App\Http\Controllers\FinanceiroController;
 use App\Http\Controllers\LivesController;
 use App\Http\Controllers\PagWiseController;
+use App\Http\Controllers\RespostaPerguntaController;
+
 
 use Laravel\Jetstream\Rules\Role;
 
@@ -68,14 +70,22 @@ Route::group(['prefix' => 'v1'], function ($router) {
         //'middleware' => 'auth:api',
         'middleware' => 'apiJwt', //Criado em Middleware/apiProtected
         'prefix' => 'atividades',
-
-
     ], function ($router) {
         Route::get('andamento/{id_oferta_disciplina_turma}', [AtividadesController::class, 'getAtividades'] );
-        Route::get('perguntas/{avaliacao_id}', [AtividadesController::class, 'getAtividadesPerguntas'] );
-  
-        
+        Route::get('perguntas/{avaliacao_id}/{id_oferta_disciplina_turma}/{id_semestre_letivo}', [AtividadesController::class, 'getAtividadesPerguntas'] );
+     
     });
+    Route::group([
+        //'middleware' => 'auth:api',
+        'middleware' => 'apiJwt', //Criado em Middleware/apiProtected
+        'prefix' => 'resposta_pergunta',
+    ], function ($router) {
+        Route::post('/criar', [RespostaPerguntaController::class, 'store'] );
+        // Route::get('andamento/{id_oferta_disciplina_turma}', [AtividadesController::class, 'getAtividades'] );
+        // Route::get('perguntas/{avaliacao_id}/{id_oferta_disciplina_turma}/{id_semestre_letivo}', [AtividadesController::class, 'getAtividadesPerguntas'] );
+     
+    });
+
 
     Route::group([
         //'middleware' => 'auth:api',

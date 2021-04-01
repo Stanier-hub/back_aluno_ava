@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddIndexTentativa extends Migration
+class AddIndextentativa extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class AddIndexTentativa extends Migration
      */
     public function up()
     {
-        Schema::table('tentativa', function (Blueprint $table) {
+        Schema::table('ead_tentativa', function (Blueprint $table) {
             $table->index('nota');
             $table->index('descricao'); 
             $table->index('status'); 
@@ -21,6 +21,9 @@ class AddIndexTentativa extends Migration
             $table->index('data_incio');
             $table->index('avaliacao_id');
             $table->index('oferta_disciplina_turma_id');
+            $table->index('usuario_id');
+            $table->index('semestre_letivo_id');
+
         });
     }
 
@@ -31,14 +34,17 @@ class AddIndexTentativa extends Migration
      */
     public function down()
     {
-        Schema::table('tentativa', function (Blueprint $table) {
-            $table->dropIndex('tentativa_nota_index');
-            $table->dropIndex('tentativa_descricao_index'); 
-            $table->dropIndex('tentativa_status_index'); 
-            $table->dropIndex('tentativa_tempo_index');
-            $table->dropIndex('tentativa_data_incio_index');
-            $table->dropIndex('tentativa_avaliacao_id_index');
-            $table->dropIndex('tentativa_oferta_disciplina_turma_id_index');
+        Schema::table('ead_tentativa', function (Blueprint $table) {
+            $table->dropIndex('ead_tentativa_nota_index');
+            $table->dropIndex('ead_tentativa_descricao_index'); 
+            $table->dropIndex('ead_tentativa_status_index'); 
+            $table->dropIndex('ead_tentativa_tempo_index');
+            $table->dropIndex('ead_tentativa_data_incio_index');
+            $table->dropIndex('ead_tentativa_avaliacao_id_index');
+            $table->dropIndex('ead_tentativa_oferta_disciplina_turma_id_index');
+            $table->dropIndex('ead_tentativa_usuario_id_index');
+            $table->dropIndex('ead_tentativa_semestre_letivo_id_index');
+
         });
     }
 }

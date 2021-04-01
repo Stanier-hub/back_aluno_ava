@@ -13,16 +13,18 @@ class CreateTentativa extends Migration
      */
     public function up()
     {
-        Schema::create('tentativa', function (Blueprint $table) {
+        Schema::create('ead_tentativa', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('nota','255');
             $table->string('descricao','255')->nullable();
             $table->timestamps();    
             $table->integer('status'); 
+            $table->integer('usuario_id')->constrained('usuario'); 
             $table->string('tempo','45')->nullable();
             $table->dateTime('data_incio')->nullable();
             $table->foreignId('avaliacao_id')->constrained('avaliacao');
             $table->foreignId('oferta_disciplina_turma_id')->constrained('oferta_disciplina_turma');
+            $table->foreignId('semestre_letivo_id')->constrained('semestre_letivo');
         });
     }
 
