@@ -13,6 +13,7 @@ use App\Http\Controllers\FinanceiroController;
 use App\Http\Controllers\LivesController;
 use App\Http\Controllers\PagWiseController;
 use App\Http\Controllers\RespostaPerguntaController;
+use App\Http\Controllers\NotasController;
 
 
 use Laravel\Jetstream\Rules\Role;
@@ -85,6 +86,20 @@ Route::group(['prefix' => 'v1'], function ($router) {
         // Route::get('perguntas/{avaliacao_id}/{id_oferta_disciplina_turma}/{id_semestre_letivo}', [AtividadesController::class, 'getAtividadesPerguntas'] );
      
     });
+
+    Route::group([
+        //'middleware' => 'auth:api',
+        'middleware' => 'apiJwt', //Criado em Middleware/apiProtected
+        'prefix' => 'notas',
+    ], function ($router) {
+        Route::get('/semestre', [NotasController::class, 'getSemestreAluno'] );
+        Route::get('/semestre/{semestre_letivo_id}', [NotasController::class, 'getNotasAluno'] );
+
+        // Route::get('andamento/{id_oferta_disciplina_turma}', [AtividadesController::class, 'getAtividades'] );
+        // Route::get('perguntas/{avaliacao_id}/{id_oferta_disciplina_turma}/{id_semestre_letivo}', [AtividadesController::class, 'getAtividadesPerguntas'] );
+     
+    });
+
 
 
     Route::group([

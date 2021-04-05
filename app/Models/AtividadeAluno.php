@@ -36,10 +36,10 @@ class AtividadeAluno extends Model
         ->join('avaliacao','avaliacao.id','ead_avaliacao_oferta_disciplina.avaliacao_id')
         ->join('tipo_avaliacao','tipo_avaliacao.id','avaliacao.tipo_avaliacao_id')
         ->where('ead_avaliacao_oferta_disciplina.oferta_disciplina_turma_id',$oferta_disciplina_turma)
-        ->where('ead_avaliacao_oferta_disciplina.data_inicio','<=',date('Y-m-d'))
-        ->where('ead_avaliacao_oferta_disciplina.data_fim','>=',date('Y-m-d'))
-        ->where('ead_avaliacao_oferta_disciplina.hora_inicio','<=',date('H:i:s'))
-        ->where('ead_avaliacao_oferta_disciplina.hora_fim','>=',date('H:i:s'))
+        // ->where('ead_avaliacao_oferta_disciplina.data_inicio','<=',date('Y-m-d'))
+        // ->where('ead_avaliacao_oferta_disciplina.data_fim','>=',date('Y-m-d'))
+        // ->where('ead_avaliacao_oferta_disciplina.hora_inicio','<=',date('H:i:s'))
+        // ->where('ead_avaliacao_oferta_disciplina.hora_fim','>=',date('H:i:s'))
         ->select('ead_avaliacao_oferta_disciplina.id as ead_avaliacao_oferta_disciplina_id','avaliacao.id as avaliacao_id','tipo_avaliacao.nome','tipo_avaliacao.descricao','tempo_minutos','quantidade_perguntas',
         'ead_avaliacao_oferta_disciplina.data_inicio','ead_avaliacao_oferta_disciplina.data_fim','ead_avaliacao_oferta_disciplina.hora_inicio','ead_avaliacao_oferta_disciplina.hora_fim')
         ->get();
