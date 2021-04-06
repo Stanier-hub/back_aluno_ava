@@ -80,7 +80,7 @@ class NotasController extends Controller
     //  return $data;
 
 foreach($disciplinas as $dis){
-    $aux=['nome_disciplina'=>$dis->nome,'1'=>0,'2'=>0,'trabalho'=>0,'3'=>0];
+    $aux=['nome_disciplina'=>$dis->nome,'1'=>'','2'=>'','trabalho'=>'','3'=>''];
 $nome_disciplina=$dis->nome;
         foreach($data as $item){
 if($dis->id == $item->oferta_disciplina_turma_id){
@@ -92,7 +92,7 @@ if($dis->id == $item->oferta_disciplina_turma_id){
     //          ['av'=>$aux,'nome_disciplina'=>$item->nome_disciplina];
     
 }
-$arrayprovas[$dis->id]=['nome_disciplina'=>$nome_disciplina,'parcial 1'=>$aux['1'],'parcial 2'=>$aux['2'],'trabalho'=>0,'final'=>$aux['3']];
+$arrayprovas[$dis->id]=['nome_disciplina'=>$nome_disciplina,'parcial 1'=>$aux['1'],'parcial 2'=>$aux['2'],'trabalho'=>'','final'=>$aux['3']];
 
         }
     $arraynotas[]=$arrayprovas;

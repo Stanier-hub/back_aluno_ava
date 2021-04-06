@@ -53,6 +53,12 @@ $tentativa_id='';
                 $corstatus='warning';
             }else{
                 $tentativa_id = $tentativa_aluno->id;
+if($element->data_fim <= date('Y-m-d')   and $element->hora_fim >=  date('H:i:s')) {
+    $tentativa_aluno->status = 3;
+}
+
+   
+
             switch($tentativa_aluno->status){
             case 1:
              $status='pendente';
@@ -63,6 +69,10 @@ $tentativa_id='';
             $status ='feito';
             $corstatus = 'success';
             break; 
+            case 3:
+            $status ='Não Realizado';
+            $corstatus = 'danger';
+            break; 
             } 
         }
         $array[] = [
@@ -72,7 +82,7 @@ $tentativa_id='';
         'quantidade_perguntas' =>$element->quantidade_perguntas,
         'avaliacao_id' =>$element->avaliacao_id,
         'titulo' => $element->nome,
-        'descricao' =>'Atividade encerara em '.$element->data_fim.' '.$element->hora_fim ,
+        'descricao' =>'Atividade encerara em '.date('d/m/Y',strtotime($element->data_fim)).' '.$element->hora_fim ,
         'data_inicio'  => $element->data_inicio,
         'status' => $status,
         'corstatus'=>$corstatus
