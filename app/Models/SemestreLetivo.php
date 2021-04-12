@@ -17,7 +17,7 @@ class SemestreLetivo extends Model
 
     public function getSemestreAluno($id)
     {
-        $data =   DB::table('semestre_letivo')
+        return  DB::table('semestre_letivo')
         ->join('semestre', 'semestre.id', '=', 'semestre_letivo.semestre_id')
         ->join('convocatoria', 'convocatoria.id', '=', 'semestre_letivo.convocatoria_id')
         ->join('semestre_anual', 'semestre_anual.id', '=', 'convocatoria.semestre_anual_id')
@@ -27,8 +27,7 @@ class SemestreLetivo extends Model
         ->where('semestre_letivo.matricula_grade_curricular_id', $id)
         ->select('semestre.nome as nome_semestre', 'semestre_letivo.*', 'ano.nome as nome_ano', 'semestre_anual.nome as nome_semestre_anual', 'users_inclusao.name as usuario_inclusao', 'users_alteracao.name as usuario_alteracao')
         ->get();
-       
-       return $data;   
+      
       
     }
  

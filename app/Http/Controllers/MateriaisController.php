@@ -26,7 +26,8 @@ class MateriasController extends Controller
 
     public function getMateriasAndamento(){
  
-      $use = $this->user->id;
+      $use = $this->user->usuario_id;
+     
 $array = $this->aluno_materias->getDisciplinaAluno($use);
 
 

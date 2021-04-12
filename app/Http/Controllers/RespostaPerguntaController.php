@@ -69,7 +69,9 @@ class RespostaPerguntaController extends Controller
   $nota = count($corretas);
     $update_colunas = array(
         'status' => '2',
-        'nota' => $nota
+        'nota' => $nota,
+        'tempo'=>$prova['tempo_duracion_prova'],
+        'encerramento'=>date('Y-m-d H:i:s')
     );
 
       DB::table('ead_tentativa')

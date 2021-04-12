@@ -40,8 +40,9 @@ class AtividadeAluno extends Model
         // ->where('ead_avaliacao_oferta_disciplina.data_fim','>=',date('Y-m-d'))
         // ->where('ead_avaliacao_oferta_disciplina.hora_inicio','<=',date('H:i:s'))
         // ->where('ead_avaliacao_oferta_disciplina.hora_fim','>=',date('H:i:s'))
-        ->select('ead_avaliacao_oferta_disciplina.id as ead_avaliacao_oferta_disciplina_id','avaliacao.id as avaliacao_id','tipo_avaliacao.nome','tipo_avaliacao.descricao','tempo_minutos','quantidade_perguntas',
-        'ead_avaliacao_oferta_disciplina.data_inicio','ead_avaliacao_oferta_disciplina.data_fim','ead_avaliacao_oferta_disciplina.hora_inicio','ead_avaliacao_oferta_disciplina.hora_fim')
+        ->where('ead_avaliacao_oferta_disciplina.status',1)
+        ->select('ead_avaliacao_oferta_disciplina.tentativa','ead_avaliacao_oferta_disciplina.id as ead_avaliacao_oferta_disciplina_id','avaliacao.id as avaliacao_id','tipo_avaliacao.nome','tipo_avaliacao.descricao','tempo_minutos','quantidade_perguntas',
+        'ead_avaliacao_oferta_disciplina.data_inicio','ead_avaliacao_oferta_disciplina.data_fim','ead_avaliacao_oferta_disciplina.hora_inicio','ead_avaliacao_oferta_disciplina.hora_fim','ead_avaliacao_oferta_disciplina.tempo_minutos')
         ->get();
 
         // return $data;
@@ -49,6 +50,7 @@ class AtividadeAluno extends Model
         foreach($data as $item){
             $id_avaliacao = $item->avaliacao_id;
             $item->quantidade_perguntas =   20*$item->quantidade_perguntas;
+            $item->data_fim_hora = $item->data_fim .' '.$item->hora_fim;
         }
 
      $arrayPerguntas =   DB::table('ead_pergunta_avaliacao') 

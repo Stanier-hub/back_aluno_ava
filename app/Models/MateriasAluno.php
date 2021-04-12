@@ -26,10 +26,14 @@ class MateriasAluno extends Model
         ->join('disciplina_grade_curricular','disciplina_grade_curricular.id','oferta_disciplina_turma.disciplina_grade_curricular_id')
         ->join('disciplina','disciplina.id','disciplina_grade_curricular.disciplina_id')
         ->join('filial','filial.id','=','semestre_oferta_disciplina.filial_id')
+        ->where('semestre_letivo.status',1)
+        ->where('matricula_grade_curricular.status',1)
+        ->where('oferta_disciplina_turma.status',1)
         ->where('semestre_oferta_disciplina.status',1)
                 ->select('semestre_oferta_disciplina.id as semestre_oferta_disciplina_id','semestre_letivo.id as semestre_letivo_id','disciplina.nome as nome_disciplina','filial.nome as nome_filial',
                 'semestre_oferta_disciplina.*')
                 ->where('matricula_grade_curricular.usuario_id',$id_aluno)
+                
                 ->get();
     }
 }

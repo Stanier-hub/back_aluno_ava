@@ -38,8 +38,10 @@ class NotasController extends Controller
     {
 
         $matricula_aluno =  DB::table('matricula_grade_curricular')
-        ->where('matricula_grade_curricular.usuario_id',$this->user->id)
+        ->where('status',1)
+        ->where('matricula_grade_curricular.usuario_id',$this->user->usuario_id)
         ->first();
+        // return $matricula_aluno;
         $data =   $this->semestreLetivo->getSemestreAluno($matricula_aluno->id);
 
        return $data;   
@@ -59,7 +61,7 @@ class NotasController extends Controller
              
                 ->get();
 
-            //    return  $disciplinas;
+                // return  $disciplinas;
 
         
       $data =   $this->tentativa
@@ -71,7 +73,7 @@ class NotasController extends Controller
       ->join('avaliacao','avaliacao.id','ead_tentativa.avaliacao_id')
       ->join('tipo_avaliacao','tipo_avaliacao.id','avaliacao.tipo_avaliacao_id')
 
-      ->where('ead_tentativa.usuario_id',$this->user->id)
+      ->where('ead_tentativa.usuario_id',$this->user->usuario_id)
       ->where('ead_tentativa.semestre_letivo_id',$semestre_letivo_id)
         ->select('ead_tentativa.oferta_disciplina_turma_id','ead_tentativa.id as tentativa_id','disciplina.nome as nome_disciplina','tipo_avaliacao.id as tipo_avaliacao_id','tipo_avaliacao.nome as nome_avaliacao','ead_tentativa.nota')
         ->get();
@@ -80,7 +82,7 @@ class NotasController extends Controller
     //  return $data;
 
 foreach($disciplinas as $dis){
-    $aux=['nome_disciplina'=>$dis->nome,'1'=>'','2'=>'','trabalho'=>'','3'=>''];
+    $aux=['nome_disciplina'=>$dis->nome,'1'=>'','2'=>'','4'=>'','3'=>''];
 $nome_disciplina=$dis->nome;
         foreach($data as $item){
 if($dis->id == $item->oferta_disciplina_turma_id){
@@ -92,7 +94,7 @@ if($dis->id == $item->oferta_disciplina_turma_id){
     //          ['av'=>$aux,'nome_disciplina'=>$item->nome_disciplina];
     
 }
-$arrayprovas[$dis->id]=['nome_disciplina'=>$nome_disciplina,'parcial 1'=>$aux['1'],'parcial 2'=>$aux['2'],'trabalho'=>'','final'=>$aux['3']];
+$arrayprovas[$dis->id]=['nome_disciplina'=>$nome_disciplina,'parcial 1'=>$aux['1'],'parcial 2'=>$aux['2'],'trabalho'=>$aux['4'],'final'=>$aux['3']];
 
         }
     $arraynotas[]=$arrayprovas;
