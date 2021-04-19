@@ -145,7 +145,7 @@ $valor_boleto = $dados_ordem->valor_total *0.7;
                
             return ['status'=>'success','mensagem'=>'Boleto gerado com sucesso','dados'=>'https://pagwise.com.br/cobrancas/'.$res_deco->uuid];
             }
-            return ['status'=>'error','mensagem'=>'Erro ao gerar'];
+            return ['status'=>$res_deco,'mensagem'=>'Erro ao gerar'];
             
             // var_dump($res_deco);
            

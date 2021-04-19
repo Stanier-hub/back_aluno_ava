@@ -75,6 +75,7 @@ Route::group(['prefix' => 'v1'], function ($router) {
         Route::get('andamento/{id_oferta_disciplina_turma}', [AtividadesController::class, 'getAtividades'] );
         Route::get('perguntas/{avaliacao_id}/{id_oferta_disciplina_turma}/{id_semestre_letivo}/{ead_avaliacao_oferta_disciplina}', [AtividadesController::class, 'getAtividadesPerguntas'] );
         Route::get('tentativas/{avaliacao_id}', [AtividadesController::class, 'listaTentativasAvaliacao'] );
+        Route::get('corrigir', [AtividadesController::class, 'CorrigirTentativa'] );
         
      
     });

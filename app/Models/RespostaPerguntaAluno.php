@@ -12,7 +12,7 @@ class RespostaPerguntaAluno extends Model
 
     protected $table = 'ead_resposta_aluno';
 
-    protected $fillable = ['id', 'ead_resposta_id','avaliacao_id', 'status',  'oferta_disciplina_turma_id', 'semestre_oferta_disciplina_id', 'usuario_id', 'ead_pergunta_id'];
+    protected $fillable = ['id','ead_tentativa_id','ead_resposta_id','avaliacao_id', 'status',  'oferta_disciplina_turma_id', 'semestre_oferta_disciplina_id', 'usuario_id', 'ead_pergunta_id'];
 
 
 

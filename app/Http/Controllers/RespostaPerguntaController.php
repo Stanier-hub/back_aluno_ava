@@ -47,7 +47,8 @@ class RespostaPerguntaController extends Controller
                 'avaliacao_id'=>$prova['avaliacao_id'],
                 'oferta_disciplina_turma_id'=>$prova['oferta_disciplina_turma_id'],
                 'semestre_oferta_disciplina_id'=>$prova['semestre_oferta_disciplina_id'],
-                'usuario_id'=>  $this->user->id
+                'usuario_id'=>  $this->user->usuario_id,
+                'ead_tentativa_id'=>$prova['tentativa_id']
             ];
             $ids_res[]=  RespostaPerguntaAluno::create($a);
             $a=[];
@@ -56,11 +57,11 @@ class RespostaPerguntaController extends Controller
 
     
  $corretas=   DB::table('ead_resposta_aluno')
-
+    
 
  ->join('ead_resposta','ead_resposta.id','ead_resposta_aluno.ead_resposta_id')
-    ->where('ead_resposta_aluno.usuario_id',$this->user->id)
-    ->where('ead_resposta_aluno.avaliacao_id',$prova['avaliacao_id'])
+    ->where('ead_resposta_aluno.usuario_id',$this->user->usuario_id)
+    ->where('ead_resposta_aluno.ead_tentativa_id',$prova['tentativa_id'])
     ->where('ead_resposta.correta',1)   
     ->select('ead_resposta.id','ead_resposta.correta')
     ->get();
@@ -72,6 +73,7 @@ class RespostaPerguntaController extends Controller
         'nota' => $nota,
         'tempo'=>$prova['tempo_duracion_prova'],
         'encerramento'=>date('Y-m-d H:i:s')
+        
     );
 
       DB::table('ead_tentativa')

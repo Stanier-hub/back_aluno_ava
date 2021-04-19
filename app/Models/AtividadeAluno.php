@@ -33,8 +33,10 @@ class AtividadeAluno extends Model
         date_default_timezone_set('America/Asuncion');
         // return date('H:i:s');
         $data = DB::table('ead_avaliacao_oferta_disciplina') 
+        
         ->join('avaliacao','avaliacao.id','ead_avaliacao_oferta_disciplina.avaliacao_id')
         ->join('tipo_avaliacao','tipo_avaliacao.id','avaliacao.tipo_avaliacao_id')
+        
         ->where('ead_avaliacao_oferta_disciplina.oferta_disciplina_turma_id',$oferta_disciplina_turma)
         // ->where('ead_avaliacao_oferta_disciplina.data_inicio','<=',date('Y-m-d'))
         // ->where('ead_avaliacao_oferta_disciplina.data_fim','>=',date('Y-m-d'))
@@ -48,26 +50,26 @@ class AtividadeAluno extends Model
         // return $data;
         $id_avaliacao =0;
         foreach($data as $item){
+            
             $id_avaliacao = $item->avaliacao_id;
             $item->quantidade_perguntas =   20*$item->quantidade_perguntas;
-            $item->data_fim_hora = $item->data_fim .' '.$item->hora_fim;
-        }
+            $item->data_fim_hora = $item->data_fim.' '.$item->hora_fim;
+        
 
      $arrayPerguntas =   DB::table('ead_pergunta_avaliacao') 
      
         ->join('ead_pergunta','ead_pergunta.id','ead_pergunta_avaliacao.ead_pergunta_id')
         ->where('ead_pergunta_avaliacao.avaliacao_id',$id_avaliacao)
         ->where('ead_pergunta_avaliacao.status',1)
-        ->select('ead_pergunta.titulo as titulo_pergunta')
+        ->select('ead_pergunta.id')
         ->get();
-
-        foreach($data as $item){
-
+        
     $item->quantidade_perguntas_real = 20*count($arrayPerguntas);
+    }
+    
+      
 
-
-        }
-return $data;
+        return $data;
     
     }
     
